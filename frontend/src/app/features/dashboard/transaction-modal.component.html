@@ -1,0 +1,77 @@
+<div class="modal-backdrop" (click)="close()"></div>
+
+<div class="bottom-sheet">
+  <div class="sheet-handle"></div>
+  <h2 class="sheet-title">Nueva Transacción</h2>
+
+  @if (errorMsg()) {
+    <div class="error-banner">⚠ {{ errorMsg() }}</div>
+  }
+
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+    <!-- Type Toggle -->
+    <div class="type-toggle">
+      <button type="button" class="type-btn expense" [class.active]="selectedType() === 'EXPENSE'" (click)="setType('EXPENSE')">
+        <span>↓</span> Gasto
+      </button>
+      <button type="button" class="type-btn income" [class.active]="selectedType() === 'INCOME'" (click)="setType('INCOME')">
+        <span>↑</span> Ingreso
+      </button>
+    </div>
+
+    <!-- Amount -->
+    <div class="amount-field">
+      <span class="currency-symbol">$</span>
+      <input
+        type="number"
+        formControlName="amount"
+        placeholder="0.00"
+        step="0.01"
+        min="0.01"
+        [class.invalid]="hasError('amount', 'required') || hasError('amount', 'min')"
+      />
+    </div>
+    @if (hasError('amount', 'required')) {
+      <span class="field-error">El monto es requerido</span>
+    }
+    @if (hasError('amount', 'min')) {
+      <span class="field-error">El monto debe ser mayor a 0</span>
+    }
+
+    <div class="fields-grid">
+      <!-- Category -->
+      <div class="field">
+        <label>Categoría</label>
+        <select formControlName="category" [class.invalid]="hasError('category', 'required')">
+          <option value="">Selecciona...</option>
+          @for (cat of categories; track cat.value) {
+            <option [value]="cat.value">{{ cat.icon }} {{ cat.label }}</option>
+          }
+        </select>
+        @if (hasError('category', 'required')) {
+          <span class="field-error">Selecciona una categoría</span>
+        }
+      </div>
+
+      <!-- Date -->
+      <div class="field">
+        <label>Fecha</label>
+        <input type="date" formControlName="date" [class.invalid]="hasError('date', 'required')" />
+        @if (hasError('date', 'required')) {
+          <span class="field-error">La fecha es requerida</span>
+        }
+      </div>
+    </div>
+
+    <!-- Description -->
+    <div class="field">
+      <label>Descripción <span class="optional">(opcional)</span></label>
+      <input type="text" formControlName="description" placeholder="¿En qué gastaste?" />
+    </div>
+
+    <button type="submit" class="btn-submit" [class.income]="selectedType() === 'INCOME'" [disabled]="loading()">
+      @if (loading()) { <span class="spinner"></span> }
+      @else { Guardar Transacción }
+    </button>
+  </form>
+</div>

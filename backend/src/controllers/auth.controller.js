@@ -1,8 +1,13 @@
+const path = require('path');
+require('dotenv').config({ path: path.resolve(__dirname, '..', '..', '.env') });
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const db = require('../config/db');
 
 const generateToken = (user) => {
+  if (!process.env.JWT_SECRET) {
+    throw new Error('JWT_SECRET no está definido en las variables de entorno');
+  }
   return jwt.sign(
     { id: user.id, email: user.email, name: user.name },
     process.env.JWT_SECRET,

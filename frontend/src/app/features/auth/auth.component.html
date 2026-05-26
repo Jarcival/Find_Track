@@ -1,0 +1,127 @@
+<div class="auth-wrapper">
+  <div class="auth-card">
+    <!-- Logo / Brand -->
+    <div class="brand">
+      <div class="brand-icon">₿</div>
+      <h1 class="brand-name">FinTrack</h1>
+      <p class="brand-sub">Controla tu dinero, no al revés.</p>
+    </div>
+
+    <!-- Tab Toggle -->
+    <div class="tab-toggle">
+      <button
+        class="tab-btn"
+        [class.active]="activeTab() === 'login'"
+        (click)="setTab('login')">
+        Entrar
+      </button>
+      <button
+        class="tab-btn"
+        [class.active]="activeTab() === 'register'"
+        (click)="setTab('register')">
+        Registro
+      </button>
+      <div class="tab-slider" [class.right]="activeTab() === 'register'"></div>
+    </div>
+
+    <!-- Error Message -->
+    @if (errorMsg()) {
+      <div class="error-banner">⚠ {{ errorMsg() }}</div>
+    }
+
+    <!-- LOGIN FORM -->
+    @if (activeTab() === 'login') {
+      <form [formGroup]="loginForm" (ngSubmit)="onLogin()" class="form" novalidate>
+        <div class="field">
+          <label>Email</label>
+          <input
+            type="email"
+            formControlName="email"
+            placeholder="tu@email.com"
+            [class.invalid]="hasError(loginForm, 'email', 'required') || hasError(loginForm, 'email', 'email')"
+          />
+          @if (hasError(loginForm, 'email', 'required')) {
+            <span class="field-error">El email es requerido</span>
+          }
+          @if (hasError(loginForm, 'email', 'email')) {
+            <span class="field-error">Email inválido</span>
+          }
+        </div>
+
+        <div class="field">
+          <label>Contraseña</label>
+          <input
+            type="password"
+            formControlName="password"
+            placeholder="••••••••"
+            [class.invalid]="hasError(loginForm, 'password', 'required') || hasError(loginForm, 'password', 'minlength')"
+          />
+          @if (hasError(loginForm, 'password', 'required')) {
+            <span class="field-error">La contraseña es requerida</span>
+          }
+          @if (hasError(loginForm, 'password', 'minlength')) {
+            <span class="field-error">Mínimo 6 caracteres</span>
+          }
+        </div>
+
+        <button type="submit" class="btn-primary" [disabled]="loading()">
+          @if (loading()) { <span class="spinner"></span> } @else { Iniciar Sesión }
+        </button>
+      </form>
+    }
+
+    <!-- REGISTER FORM -->
+    @if (activeTab() === 'register') {
+      <form [formGroup]="registerForm" (ngSubmit)="onRegister()" class="form" novalidate>
+        <div class="field">
+          <label>Nombre</label>
+          <input
+            type="text"
+            formControlName="name"
+            placeholder="Tu nombre"
+            [class.invalid]="hasError(registerForm, 'name', 'required')"
+          />
+          @if (hasError(registerForm, 'name', 'required')) {
+            <span class="field-error">El nombre es requerido</span>
+          }
+        </div>
+
+        <div class="field">
+          <label>Email</label>
+          <input
+            type="email"
+            formControlName="email"
+            placeholder="tu@email.com"
+            [class.invalid]="hasError(registerForm, 'email', 'required') || hasError(registerForm, 'email', 'email')"
+          />
+          @if (hasError(registerForm, 'email', 'required')) {
+            <span class="field-error">El email es requerido</span>
+          }
+          @if (hasError(registerForm, 'email', 'email')) {
+            <span class="field-error">Email inválido</span>
+          }
+        </div>
+
+        <div class="field">
+          <label>Contraseña</label>
+          <input
+            type="password"
+            formControlName="password"
+            placeholder="••••••••"
+            [class.invalid]="hasError(registerForm, 'password', 'required') || hasError(registerForm, 'password', 'minlength')"
+          />
+          @if (hasError(registerForm, 'password', 'required')) {
+            <span class="field-error">La contraseña es requerida</span>
+          }
+          @if (hasError(registerForm, 'password', 'minlength')) {
+            <span class="field-error">Mínimo 6 caracteres</span>
+          }
+        </div>
+
+        <button type="submit" class="btn-primary" [disabled]="loading()">
+          @if (loading()) { <span class="spinner"></span> } @else { Crear Cuenta }
+        </button>
+      </form>
+    }
+  </div>
+</div>
