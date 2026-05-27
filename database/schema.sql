@@ -31,3 +31,15 @@ CREATE TABLE IF NOT EXISTS transactions (
 -- Índices para mejor rendimiento
 CREATE INDEX idx_transactions_user_id ON transactions(user_id);
 CREATE INDEX idx_transactions_date ON transactions(date);
+
+-- Tabla de ahorros (Cajita de Ahorro)
+CREATE TABLE IF NOT EXISTS savings (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  user_id INT NOT NULL UNIQUE,
+  balance DECIMAL(10,2) NOT NULL DEFAULT 0.00,
+  target_amount DECIMAL(10,2) DEFAULT NULL,
+  target_date DATE DEFAULT NULL,
+  active BOOLEAN NOT NULL DEFAULT FALSE,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT fk_savings_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);

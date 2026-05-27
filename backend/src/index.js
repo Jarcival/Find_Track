@@ -5,6 +5,7 @@ const cors = require('cors');
 
 const authRoutes = require('./routes/auth.routes');
 const transactionRoutes = require('./routes/transactions.routes');
+const savingsRoutes = require('./routes/savings.routes');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -20,6 +21,7 @@ app.use(express.urlencoded({ extended: true }));
 // Rutas
 app.use('/api/auth', authRoutes);
 app.use('/api/transactions', transactionRoutes);
+app.use('/api/savings', savingsRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => {

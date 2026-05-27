@@ -13,10 +13,32 @@ const pool = mysql2.createPool({
   queueLimit: 0,
 });
 
-// Verificar conexión al iniciar
+// Verificar conexión al iniciar y crear tabla savings si no existe
 pool.getConnection()
-  .then(conn => {
+  .then(async (conn) => {
     console.log('✅ Conectado a MySQL (XAMPP)');
+    
+    // Crear tabla de ahorros si no existe
+    const createTableQuery = `
+      CREATE TABLE IF NOT EXISTS savings (
+        id INT PRIMARY KEY AUTO_INCREMENT,
+        user_id INT NOT NULL UNIQUE,
+        balance DECIMAL(10,2) NOT NULL DEFAULT 0.00,
+        target_amount DECIMAL(10,2) DEFAULT NULL,
+        target_date DATE DEFAULT NULL,
+        active BOOLEAN NOT NULL DEFAULT FALSE,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        CONSTRAINT fk_savings_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+      );
+    `;
+    
+    try {
+      await conn.query(createTableQuery);
+      console.log('✅ Tabla "savings" verificada/creada exitosamente.');
+    } catch (tableErr) {
+      console.error('❌ Error al crear la tabla "savings":', tableErr.message);
+    }
+    
     conn.release();
   })
   .catch(err => {

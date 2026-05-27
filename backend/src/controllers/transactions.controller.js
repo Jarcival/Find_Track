@@ -79,12 +79,18 @@ const deleteTransaction = async (req, res) => {
 
   try {
     const [rows] = await db.query(
-      'SELECT id FROM transactions WHERE id = ? AND user_id = ?',
+      'SELECT id, category FROM transactions WHERE id = ? AND user_id = ?',
       [id, userId]
     );
 
     if (rows.length === 0) {
       return res.status(404).json({ message: 'Transacción no encontrada o no tienes permiso.' });
+    }
+
+    if (rows[0].category === 'Ahorro') {
+      return res.status(400).json({
+        message: 'No puedes eliminar transacciones de Ahorro. Para ajustar tu saldo, usa las opciones de depósito o retiro en tu Cajita.'
+      });
     }
 
     await db.query('DELETE FROM transactions WHERE id = ?', [id]);
