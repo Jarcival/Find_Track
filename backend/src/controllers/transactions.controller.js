@@ -56,7 +56,7 @@ const createTransaction = async (req, res) => {
 
   try {
     const [result] = await db.query(
-      'INSERT INTO transactions (user_id, amount, type, category, description, date) VALUES (?, ?, ?, ?, ?, ?)',
+      'INSERT INTO transactions (user_id, amount, type, category, description, date, created_at) VALUES (?, ?, ?, ?, ?, ?, NOW())',
       [userId, Math.abs(parseFloat(amount)), type, category, description || '', date]
     );
 
