@@ -30,6 +30,7 @@ angular/dist
 *.map
 *.d.ts
 !src/**/*.js
+!backend/**/*.js
 
 # OS files
 Thumbs.db
