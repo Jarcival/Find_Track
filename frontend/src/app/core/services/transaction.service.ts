@@ -2,10 +2,11 @@ import { Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { tap } from 'rxjs/operators';
 import { CreateTransactionDto, TransactionsResponse } from '../models/models';
+import { API_BASE_URL } from '../config/config';
 
 @Injectable({ providedIn: 'root' })
 export class TransactionService {
-  private readonly API = 'http://localhost:3000/api/transactions';
+  private readonly API = `${API_BASE_URL}/transactions`;
 
   // Estado reactivo con signals
   data = signal<TransactionsResponse>({

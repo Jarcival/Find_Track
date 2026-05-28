@@ -3,10 +3,11 @@ import { HttpClient } from '@angular/common/http';
 import { tap } from 'rxjs/operators';
 import { Savings } from '../models/models';
 import { TransactionService } from './transaction.service';
+import { API_BASE_URL } from '../config/config';
 
 @Injectable({ providedIn: 'root' })
 export class SavingsService {
-  private readonly API = 'http://localhost:3000/api/savings';
+  private readonly API = `${API_BASE_URL}/savings`;
 
   // Estado reactivo de los ahorros
   savingsState = signal<Savings | null>(null);

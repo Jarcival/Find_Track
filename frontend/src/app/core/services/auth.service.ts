@@ -3,10 +3,11 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { tap } from 'rxjs/operators';
 import { AuthResponse, User } from '../models/models';
+import { API_BASE_URL } from '../config/config';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  private readonly API = 'http://localhost:3000/api/auth';
+  private readonly API = `${API_BASE_URL}/auth`;
   private readonly TOKEN_KEY = 'fintrack_token';
   private readonly USER_KEY = 'fintrack_user';
 
